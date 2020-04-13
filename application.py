@@ -49,6 +49,7 @@ class Application:
 
     def create_contact(self, contact):
         wd = self.wd
+        self.open_add_contact_page()
         # fill contact form
         wd.find_element_by_name("firstname").send_keys(contact.first_name)
         wd.find_element_by_name("middlename").send_keys(contact.middle_name)
@@ -75,6 +76,7 @@ class Application:
         wd.find_element_by_name("notes").send_keys(contact.secondary_notes)
         # submit contact creation
         wd.find_element_by_name("submit").click()
+        self.return_to_homepage()
 
     def open_add_contact_page(self):
         wd = self.wd
