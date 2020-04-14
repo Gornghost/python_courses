@@ -20,3 +20,5 @@ def test_add_contact(app):
                                     anniversary_day="//select[@name='aday']//option[3]", anniversary_month="//select[@name='amonth']//option[3]", anniversary_year="2000",
                                     secondary_address="test secondary address", secondary_phone="test secondary phone", secondary_notes="test secondary notes"))
     app.logout()
+
+experiments
