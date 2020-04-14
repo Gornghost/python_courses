@@ -1,4 +1,4 @@
-
+from time import sleep
 
 class SessionHelper:
 
@@ -14,4 +14,4 @@ class SessionHelper:
 
     def logout(self):
         wd = self.app.wd
-        wd.find_element_by_xpath("// a[contains(text(), 'LOGOUT')]").click()
+        wd.find_element_by_link_text("LOGOUT").click()
