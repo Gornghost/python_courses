@@ -6,34 +6,36 @@ class ContactHelper:
     def create(self, contact):
         wd = self.app.wd
         self.open_add_contact_page()
-        # fill contact form
-        wd.find_element_by_name("firstname").send_keys(contact.first_name)
-        wd.find_element_by_name("middlename").send_keys(contact.middle_name)
-        wd.find_element_by_name("lastname").send_keys(contact.last_name)
-        wd.find_element_by_name("nickname").send_keys(contact.nickname)
-        wd.find_element_by_name("title").send_keys(contact.title)
-        wd.find_element_by_name("company").send_keys(contact.company)
-        wd.find_element_by_name("address").send_keys(contact.address)
-        wd.find_element_by_name("home").send_keys(contact.phone_home)
-        wd.find_element_by_name("mobile").send_keys(contact.phone_mobile)
-        wd.find_element_by_name("work").send_keys(contact.phone_work)
-        wd.find_element_by_name("fax").send_keys(contact.fax)
-        wd.find_element_by_name("email").send_keys(contact.email)
-        wd.find_element_by_name("email2").send_keys(contact.email2)
-        wd.find_element_by_name("email3").send_keys(contact.email3)
-        wd.find_element_by_name("homepage").send_keys(contact.homepage)
-        wd.find_element_by_xpath(contact.birthday_day).click()
-        wd.find_element_by_xpath(contact.birthday_month).click()
-        wd.find_element_by_name("byear").send_keys(contact.birthday_year)
-        wd.find_element_by_xpath(contact.anniversary_day).click()
-        wd.find_element_by_xpath(contact.anniversary_month).click()
-        wd.find_element_by_name("ayear").send_keys(contact.anniversary_year)
-        wd.find_element_by_name("address2").send_keys(contact.secondary_address)
-        wd.find_element_by_name("phone2").send_keys(contact.secondary_phone)
-        wd.find_element_by_name("notes").send_keys(contact.secondary_notes)
+        self.fill_contact_form(contact)
         # submit contact creation
         wd.find_element_by_name("submit").click()
         self.app.return_to_homepage()
+
+    def fill_contact_form(self, contact):
+        self.change_field_value("firstname", contact.first_name)
+        self.change_field_value("middlename", contact.middle_name)
+        self.change_field_value("lastname", contact.last_name)
+        self.change_field_value("nickname", contact.nickname)
+        self.change_field_value("title", contact.title)
+        self.change_field_value("company", contact.company)
+        self.change_field_value("address", contact.address)
+        self.change_field_value("home", contact.phone_home)
+        self.change_field_value("mobile", contact.phone_mobile)
+        self.change_field_value("work", contact.phone_work)
+        self.change_field_value("fax", contact.fax)
+        self.change_field_value("email", contact.email)
+        self.change_field_value("email2", contact.email2)
+        self.change_field_value("email3", contact.email3)
+        self.change_field_value("homepage", contact.homepage)
+        self.change_select_list_value(contact.birthday_day)
+        self.change_select_list_value(contact.birthday_month)
+        self.change_field_value("byear", contact.birthday_year)
+        self.change_select_list_value(contact.anniversary_day)
+        self.change_select_list_value(contact.anniversary_month)
+        self.change_field_value("ayear", contact.anniversary_year)
+        self.change_field_value("address2", contact.secondary_address)
+        self.change_field_value("phone2", contact.secondary_phone)
+        self.change_field_value("notes", contact.secondary_notes)
 
     def open_add_contact_page(self):
         wd = self.app.wd
@@ -42,8 +44,7 @@ class ContactHelper:
     def delete_first_contact(self):
         wd = self.app.wd
         self.app.open_home_page()
-        # select first contact
-        wd.find_element_by_name("selected[]").click()
+        self.select_first_contact()
         # submit deletion
         wd.find_element_by_xpath("//div[@id='content']/form[2]/div[2]/input").click()
         # confirm deletion in the pop up
@@ -53,35 +54,27 @@ class ContactHelper:
     def edit_first_contact(self, contact):
         wd = self.app.wd
         self.app.open_home_page()
-        # select first contact
-        wd.find_element_by_name("selected[]").click()
+        self.select_first_contact()
         # click "edit"
         wd.find_element_by_xpath("//table[@id='maintable']//tr[@name='entry'][1]/td[8]").click()
         # edit contact form
-        wd.find_element_by_name("firstname").send_keys(contact.first_name)
-        wd.find_element_by_name("middlename").send_keys(contact.middle_name)
-        wd.find_element_by_name("lastname").send_keys(contact.last_name)
-        wd.find_element_by_name("nickname").send_keys(contact.nickname)
-        wd.find_element_by_name("title").send_keys(contact.title)
-        wd.find_element_by_name("company").send_keys(contact.company)
-        wd.find_element_by_name("address").send_keys(contact.address)
-        wd.find_element_by_name("home").send_keys(contact.phone_home)
-        wd.find_element_by_name("mobile").send_keys(contact.phone_mobile)
-        wd.find_element_by_name("work").send_keys(contact.phone_work)
-        wd.find_element_by_name("fax").send_keys(contact.fax)
-        wd.find_element_by_name("email").send_keys(contact.email)
-        wd.find_element_by_name("email2").send_keys(contact.email2)
-        wd.find_element_by_name("email3").send_keys(contact.email3)
-        wd.find_element_by_name("homepage").send_keys(contact.homepage)
-        wd.find_element_by_xpath(contact.birthday_day).click()
-        wd.find_element_by_xpath(contact.birthday_month).click()
-        wd.find_element_by_name("byear").send_keys(contact.birthday_year)
-        wd.find_element_by_xpath(contact.anniversary_day).click()
-        wd.find_element_by_xpath(contact.anniversary_month).click()
-        wd.find_element_by_name("ayear").send_keys(contact.anniversary_year)
-        wd.find_element_by_name("address2").send_keys(contact.secondary_address)
-        wd.find_element_by_name("phone2").send_keys(contact.secondary_phone)
-        wd.find_element_by_name("notes").send_keys(contact.secondary_notes)
+        self.fill_contact_form(contact)
         # click Update
         wd.find_element_by_name("update").click()
         self.app.return_to_homepage()
+
+    def change_field_value(self, field, value):
+        wd = self.app.wd
+        if value is not None:
+            wd.find_element_by_name(field).click()
+            wd.find_element_by_name(field).clear()
+            wd.find_element_by_name(field).send_keys(value)
+
+    def change_select_list_value(self, select_list):
+        wd = self.app.wd
+        if select_list is not None:
+            wd.find_element_by_xpath(select_list).click()
+
+    def select_first_contact(self):
+        wd = self.app.wd
+        wd.find_element_by_name("selected[]").click()

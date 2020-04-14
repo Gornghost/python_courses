@@ -44,6 +44,7 @@ class GroupHelper:
     def change_field_value(self, field, value):
         wd = self.app.wd
         if value is not None:
+            wd.find_element_by_name(field).click()
             wd.find_element_by_name(field).clear()
             wd.find_element_by_name(field).send_keys(value)
 
