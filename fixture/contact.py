@@ -3,7 +3,7 @@ class ContactHelper:
     def __init__(self, app):
         self.app = app
 
-    def create_contact(self, contact):
+    def create(self, contact):
         wd = self.app.wd
         self.open_add_contact_page()
         # fill contact form
