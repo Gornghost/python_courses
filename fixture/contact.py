@@ -5,6 +5,7 @@ class ContactHelper:
 
     def create(self, contact):
         wd = self.app.wd
+        self.app.open_home_page()
         self.open_add_contact_page()
         self.fill_contact_form(contact)
         # submit contact creation
@@ -81,5 +82,5 @@ class ContactHelper:
 
     def count(self):
         wd = self.app.wd
-        self.app.open_home_page()
+        self.app.return_to_homepage()
         return len(wd.find_elements_by_name("selected[]"))
