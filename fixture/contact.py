@@ -1,4 +1,5 @@
 from model.contact import Contact
+import time
 
 class ContactHelper:
 
@@ -12,7 +13,7 @@ class ContactHelper:
         self.fill_contact_form(contact)
         # submit contact creation
         wd.find_element_by_name("submit").click()
-        self.app.return_to_homepage()
+        self.app.open_home_page()
         self.contact_cache = None
 
     def fill_contact_form(self, contact):
@@ -53,7 +54,7 @@ class ContactHelper:
         wd.find_element_by_xpath("//div[@id='content']/form[2]/div[2]/input").click()
         # confirm deletion in the pop up
         wd.switch_to_alert().accept()
-        self.app.return_to_homepage()
+        self.app.open_home_page()
         self.contact_cache = None
 
     def edit_first_contact(self, contact):
@@ -66,7 +67,7 @@ class ContactHelper:
         self.fill_contact_form(contact)
         # click Update
         wd.find_element_by_name("update").click()
-        self.app.return_to_homepage()
+        self.app.open_home_page()
         self.contact_cache = None
 
     def change_field_value(self, field, value):
@@ -95,6 +96,7 @@ class ContactHelper:
     def get_contact_list(self):
         if self.contact_cache is None:
             wd = self.app.wd
+            time.sleep(.050)    # I don't know why, but sometimes tests are down without this pause
             self.app.open_home_page()
             self.contact_cache = []
             for element in wd.find_elements_by_name("entry"):

@@ -22,8 +22,8 @@ class Application:
 
     def open_home_page(self):
         wd = self.wd
-        if not self.current_page_is_homepage():
-            wd.get("http://localhost/addressbook")
+        if not (wd.current_url.endswith("/addressbook/") and len(wd.find_elements_by_name("MainForm")) > 0):
+            wd.get("http://localhost/addressbook/")
 
     def return_to_homepage(self):
         wd = self.wd
