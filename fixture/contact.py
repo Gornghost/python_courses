@@ -54,6 +54,7 @@ class ContactHelper:
         wd.find_element_by_xpath("//div[@id='content']/form[2]/div[2]/input").click()
         # confirm deletion in the pop up
         wd.switch_to_alert().accept()
+        time.sleep(.1)  # I don't know why, but sometimes tests are down without this pause
         self.app.open_home_page()
         self.contact_cache = None
 
@@ -96,7 +97,6 @@ class ContactHelper:
     def get_contact_list(self):
         if self.contact_cache is None:
             wd = self.app.wd
-            time.sleep(.050)    # I don't know why, but sometimes tests are down without this pause
             self.app.open_home_page()
             self.contact_cache = []
             for element in wd.find_elements_by_name("entry"):
