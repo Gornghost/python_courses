@@ -47,9 +47,12 @@ class ContactHelper:
         wd.find_element_by_link_text("ADD_NEW").click()
 
     def delete_first_contact(self):
+        self.delete_contact_by_index(0)
+
+    def delete_contact_by_index(self, index):
         wd = self.app.wd
         self.app.open_home_page()
-        self.select_first_contact()
+        self.select_contact_by_index(index)
         # submit deletion
         wd.find_element_by_xpath("//div[@id='content']/form[2]/div[2]/input").click()
         # confirm deletion in the pop up
@@ -59,17 +62,25 @@ class ContactHelper:
         self.contact_cache = None
 
     def edit_first_contact(self, contact):
+        self.edit_contact_by_index(contact, 0)
+
+    def edit_contact_by_index(self, contact, index):
         wd = self.app.wd
         self.app.open_home_page()
-        self.select_first_contact()
+        self.select_contact_by_index(index)
         # click "edit"
-        wd.find_element_by_xpath("//table[@id='maintable']//tr[@name='entry'][1]/td[8]").click()
+        wd.find_element_by_xpath("//table[@id='maintable']//tr[@name='entry'][%s]/td[8]/a/img" % str(index+1)).click()
         # edit contact form
         self.fill_contact_form(contact)
         # click Update
         wd.find_element_by_name("update").click()
         self.app.open_home_page()
         self.contact_cache = None
+
+    # def click_on_edit_icon_by_index(self, index):
+    #     wd = self.app.wd
+    #     contact = wd.find_elements_by_name("entry")[index]
+    #     contact.find_element_by_xpath(".//td[8]/a/img")
 
     def change_field_value(self, field, value):
         wd = self.app.wd
@@ -83,9 +94,9 @@ class ContactHelper:
         if select_list is not None:
             wd.find_element_by_xpath(select_list).click()
 
-    def select_first_contact(self):
+    def select_contact_by_index(self, index):
         wd = self.app.wd
-        wd.find_element_by_name("selected[]").click()
+        wd.find_elements_by_name("selected[]")[index].click()
 
     def count(self):
         wd = self.app.wd

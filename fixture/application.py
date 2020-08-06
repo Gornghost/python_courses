@@ -2,6 +2,7 @@ from selenium.webdriver.firefox.webdriver import WebDriver
 from fixture.session import SessionHelper
 from fixture.group import GroupHelper
 from fixture.contact import ContactHelper
+from random import randrange
 
 
 class Application:
@@ -29,6 +30,9 @@ class Application:
         wd = self.wd
         if not self.current_page_is_homepage():
             wd.find_element_by_link_text("HOME").click()
+
+    def random_element_of_list(self, list_items):
+        return randrange(len(list_items))
 
     def current_page_is_homepage(self):
         wd = self.wd
