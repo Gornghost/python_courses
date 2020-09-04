@@ -13,7 +13,7 @@ def test_edit_random_contact(app):
                                secondary_address=" EDITED", secondary_phone=" EDITED", secondary_notes=" EDITED")
     old_contacts = app.contact.get_contact_list()
     index = app.random_element_of_list(old_contacts)
-    contact.id = old_contacts[index].id
+    contact.contact_id = old_contacts[index].contact_id
     app.contact.edit_contact_by_index(contact, index)
     assert len(old_contacts) == app.contact.count()
     new_contacts = app.contact.get_contact_list()

@@ -1,5 +1,7 @@
 from model.contact import Contact
 import time
+import re
+
 
 class ContactHelper:
 
@@ -66,16 +68,20 @@ class ContactHelper:
 
     def edit_contact_by_index(self, contact, index):
         wd = self.app.wd
-        self.app.open_home_page()
-        self.select_contact_by_index(index)
-        # click "edit"
-        wd.find_element_by_xpath("//table[@id='maintable']//tr[@name='entry'][%s]/td[8]/a/img" % str(index+1)).click()
+        self.open_edit_contact_page_by_index(index)
         # edit contact form
         self.fill_contact_form(contact)
         # click Update
         wd.find_element_by_name("update").click()
         self.app.open_home_page()
         self.contact_cache = None
+
+    def open_edit_contact_page_by_index(self, index):
+        wd = self.app.wd
+        self.app.open_home_page()
+        self.select_contact_by_index(index)
+        # click "edit"
+        wd.find_element_by_xpath("//table[@id='maintable']//tr[@name='entry'][%s]/td[8]/a/img" % str(index+1)).click()
 
     # def click_on_edit_icon_by_index(self, index):
     #     wd = self.app.wd
@@ -111,8 +117,42 @@ class ContactHelper:
             self.app.open_home_page()
             self.contact_cache = []
             for element in wd.find_elements_by_name("entry"):
-                last_name = element.find_element_by_xpath("./td[2]").text
-                first_name = element.find_element_by_xpath("./td[3]").text
-                id = element.find_element_by_name("selected[]").get_attribute("id")
-                self.contact_cache.append(Contact(first_name=first_name, last_name=last_name, id=id))
+                cells = element.find_elements_by_tag_name("td")
+                last_name = cells[1].text
+                first_name = cells[2].text
+                contact_id = cells[0].find_element_by_name("selected[]").get_attribute("id")
+                all_phones = cells[5].text.splitlines()
+                self.contact_cache.append(Contact(first_name=first_name, last_name=last_name, contact_id=contact_id,
+                                                  phone_home=all_phones[0], phone_mobile=all_phones[1],
+                                                  phone_work=all_phones[2], secondary_phone=all_phones[3]))
         return list(self.contact_cache)
+
+    def get_contact_info_from_edit_page(self, index):
+        wd = self.app.wd
+        self.open_edit_contact_page_by_index(index)
+        first_name = wd.find_element_by_name("firstname").get_attribute("value")
+        last_name = wd.find_element_by_name("lastname").get_attribute("value")
+        contact_id = wd.find_element_by_name("id").get_attribute("value")
+        phone_home = wd.find_element_by_name("home").get_attribute("value")
+        phone_mobile = wd.find_element_by_name("mobile").get_attribute("value")
+        phone_work = wd.find_element_by_name("work").get_attribute("value")
+        secondary_phone = wd.find_element_by_name("phone2").get_attribute("value")
+        return Contact(first_name=first_name, last_name=last_name, contact_id=contact_id, phone_home=phone_home,
+                       phone_mobile=phone_mobile, phone_work=phone_work, secondary_phone=secondary_phone)
+
+    def get_contact_info_from_view_page(self, index):
+        wd = self.app.wd
+        self.open_view_contact_page_by_index(index)
+        full_text = wd.find_element_by_id("content").text
+        phone_home = re.search("H: (.*)", full_text).group(1)
+        phone_mobile = re.search("M: (.*)", full_text).group(1)
+        phone_work = re.search("W: (.*)", full_text).group(1)
+        secondary_phone = re.search("P: (.*)", full_text).group(1)
+        return Contact(phone_home=phone_home,phone_mobile=phone_mobile, phone_work=phone_work, secondary_phone=secondary_phone)
+
+    def open_view_contact_page_by_index(self, index):
+        wd = self.app.wd
+        self.app.open_home_page()
+        self.select_contact_by_index(index)
+        # click "edit"
+        wd.find_element_by_xpath("//table[@id='maintable']//tr[@name='entry'][%s]/td[7]/a/img" % str(index+1)).click()

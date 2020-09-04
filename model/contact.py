@@ -8,7 +8,7 @@ class Contact:
                  email=None, email2=None, email3=None, homepage=None,
                  birthday_day=None, birthday_month=None, birthday_year=None,
                  anniversary_day=None, anniversary_month=None, anniversary_year=None,
-                 secondary_address=None, secondary_phone=None, secondary_notes=None, id=None):
+                 secondary_address=None, secondary_phone=None, secondary_notes=None, contact_id=None):
         self.first_name = first_name
         self.middle_name = middle_name
         self.last_name = last_name
@@ -33,16 +33,16 @@ class Contact:
         self.secondary_address = secondary_address
         self.secondary_phone = secondary_phone
         self.secondary_notes = secondary_notes
-        self.id = id
+        self.contact_id = contact_id
 
     def __eq__(self, other):
-        return self.first_name == other.first_name and self.last_name == other.last_name and (self.id is None or other.id is None or self.id == other.id)
+        return self.first_name == other.first_name and self.last_name == other.last_name and (self.contact_id is None or other.contact_id is None or self.contact_id == other.contact_id)
 
     def __repr__(self):
-        return "%s: %s, %s" % (self.id, self.first_name, self.last_name)
+        return "%s: %s, %s" % (self.contact_id, self.first_name, self.last_name)
 
     def id_or_max(self):
-        if self.id:
-            return int(self.id)
+        if self.contact_id:
+            return int(self.contact_id)
         else:
             return maxsize
