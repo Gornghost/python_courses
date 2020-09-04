@@ -8,7 +8,7 @@ class Contact:
                  email=None, email2=None, email3=None, homepage=None,
                  birthday_day=None, birthday_month=None, birthday_year=None,
                  anniversary_day=None, anniversary_month=None, anniversary_year=None,
-                 secondary_address=None, secondary_phone=None, secondary_notes=None, contact_id=None):
+                 secondary_address=None, secondary_phone=None, secondary_notes=None, contact_id=None, all_phones_from_homepage=None):
         self.first_name = first_name
         self.middle_name = middle_name
         self.last_name = last_name
@@ -34,6 +34,7 @@ class Contact:
         self.secondary_phone = secondary_phone
         self.secondary_notes = secondary_notes
         self.contact_id = contact_id
+        self.all_phones_from_homepage = all_phones_from_homepage
 
     def __eq__(self, other):
         return self.first_name == other.first_name and self.last_name == other.last_name and (self.contact_id is None or other.contact_id is None or self.contact_id == other.contact_id)

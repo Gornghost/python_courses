@@ -121,10 +121,9 @@ class ContactHelper:
                 last_name = cells[1].text
                 first_name = cells[2].text
                 contact_id = cells[0].find_element_by_name("selected[]").get_attribute("id")
-                all_phones = cells[5].text.splitlines()
+                all_phones = cells[5].text
                 self.contact_cache.append(Contact(first_name=first_name, last_name=last_name, contact_id=contact_id,
-                                                  phone_home=all_phones[0], phone_mobile=all_phones[1],
-                                                  phone_work=all_phones[2], secondary_phone=all_phones[3]))
+                                                  all_phones_from_homepage=all_phones))
         return list(self.contact_cache)
 
     def get_contact_info_from_edit_page(self, index):
@@ -144,11 +143,18 @@ class ContactHelper:
         wd = self.app.wd
         self.open_view_contact_page_by_index(index)
         full_text = wd.find_element_by_id("content").text
-        phone_home = re.search("H: (.*)", full_text).group(1)
-        phone_mobile = re.search("M: (.*)", full_text).group(1)
-        phone_work = re.search("W: (.*)", full_text).group(1)
-        secondary_phone = re.search("P: (.*)", full_text).group(1)
+        # phone_home = re.search("H: (.*)", full_text).group(1)
+        phone_home = self.find_by_text_and_get_value("H: ", full_text)
+        phone_mobile = self.find_by_text_and_get_value ("M: ", full_text)
+        phone_work = self.find_by_text_and_get_value ("W: ", full_text)
+        secondary_phone = self.find_by_text_and_get_value ("P: ", full_text)
         return Contact(phone_home=phone_home,phone_mobile=phone_mobile, phone_work=phone_work, secondary_phone=secondary_phone)
+
+    def find_by_text_and_get_value(self, searching_text, full_text):
+        if re.search(searching_text, full_text):
+            return re.search("%s(.*)" % searching_text, full_text).group(1)
+        else:
+            return ""
 
     def open_view_contact_page_by_index(self, index):
         wd = self.app.wd
