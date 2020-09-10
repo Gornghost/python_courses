@@ -63,6 +63,18 @@ class ContactHelper:
         self.app.open_home_page()
         self.contact_cache = None
 
+    def delete_all_contacts(self):
+        wd = self.app.wd
+        self.app.open_home_page()
+        self.select_all_contacts()
+        # submit deletion
+        wd.find_element_by_xpath("//div[@id='content']/form[2]/div[2]/input").click()
+        # confirm deletion in the pop up
+        wd.switch_to_alert().accept()
+        time.sleep(.1)  # I don't know why, but sometimes tests are failed without this pause
+        self.app.open_home_page()
+        self.contact_cache = None
+
     def edit_first_contact(self, contact):
         self.edit_contact_by_index(contact, 0)
 
@@ -103,6 +115,10 @@ class ContactHelper:
     def select_contact_by_index(self, index):
         wd = self.app.wd
         wd.find_elements_by_name("selected[]")[index].click()
+
+    def select_all_contacts(self):
+        wd = self.app.wd
+        wd.find_element_by_id("MassCB").click()
 
     def count(self):
         wd = self.app.wd

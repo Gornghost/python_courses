@@ -11,3 +11,10 @@ def test_delete_random_group(app):
     new_groups = app.group.get_group_list()
     old_groups[index:index+1] = []
     assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
+
+
+def test_delete_all_groups(app):
+    if app.group.count() == 0:
+        app.group.create(Group(name="test"))
+    app.group.delete_all_groups()
+    assert len(app.group.get_group_list()) == 0
