@@ -13,8 +13,8 @@ def test_delete_random_group(app):
     assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
 
 
-def test_delete_all_groups(app):
-    if app.group.count() == 0:
-        app.group.create(Group(name="test"))
-    app.group.delete_all_groups()
-    assert len(app.group.get_group_list()) == 0
+# def test_delete_all_groups(app):
+#     if app.group.count() == 0:
+#         app.group.create(Group(name="test"))
+#     app.group.delete_all_groups()
+#     assert len(app.group.get_group_list()) == 0

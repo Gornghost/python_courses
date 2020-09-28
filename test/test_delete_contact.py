@@ -13,8 +13,8 @@ def test_delete_random_contact(app):
     assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)
 
 
-def test_delete_all_contacts(app):
-    if app.contact.count() == 0:
-        app.contact.create(Contact(first_name="test"))
-    app.contact.delete_all_contacts()
-    assert len(app.contact.get_contact_list()) == 0
+# def test_delete_all_contacts(app):
+#     if app.contact.count() == 0:
+#         app.contact.create(Contact(first_name="test"))
+#     app.contact.delete_all_contacts()
+#     assert len(app.contact.get_contact_list()) == 0
